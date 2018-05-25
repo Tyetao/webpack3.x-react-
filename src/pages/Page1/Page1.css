@@ -1,3 +1,9 @@
 .page-box {
-    border: 1px solid red;
+  border: 1px solid red;
+  display: flex;
+  & span {
+      color: red;
+      font-size: 60px;
+  }
 }
+
