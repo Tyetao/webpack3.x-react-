@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 
-export default class Hello extends Component {
+export default class NotFound extends Component {
+
     render() {
         return (
             <div>
-                Hello,React!
+                404
             </div>
         )
     }

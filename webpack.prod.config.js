@@ -1,7 +1,6 @@
 const path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const Webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -30,7 +29,7 @@ module.exports = {
                 use: "css-loader"
             })
         }, {
-            test: /\.(png|jpg|gif)$/,
+            test: /\.(png|jpg|jpeg|gif|svg)$/,
             use: [{
                 loader: 'url-loader',
                 options: {
@@ -42,23 +41,36 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
-        new webpack.DefinePlugin({
+        new Webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
         new HtmlWebpackPlugin({
+            title: 'My React',
             filename: 'index.html',
-            template: path.join(__dirname, 'src/index.html')
+            template: path.join(__dirname, 'src/index.html'),
+            favicon: './Binary.ico',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+            }
         }),
-        new webpack.optimize.CommonsChunkPlugin({
+        new Webpack.optimize.CommonsChunkPlugin({
             name: 'vendor'
         }),
-        new webpack.optimize.CommonsChunkPlugin({
+        new Webpack.optimize.CommonsChunkPlugin({
             name: 'runtime'
         }),
-        new webpack.HashedModuleIdsPlugin(),
-        new UglifyJSPlugin(),
+        new Webpack.HashedModuleIdsPlugin(),
+        new Webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            sourceMap: true
+        }),
         new ExtractTextPlugin({
             filename: 'css/[name].[contenthash:5].css',
             allChunks: true
